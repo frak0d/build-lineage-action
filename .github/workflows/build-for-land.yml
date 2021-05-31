@@ -9,15 +9,21 @@ jobs:
       - name:
         run: |
           # Setting up Build Directories
+          mkdir ~/bin
+          PATH=~/bin:$PATH
           mkdir -p ~/android/lineage
           cd ~/android/lineage
           
           # Installing Dependencies from Apt
-          sudo apt update && sudo apt install openjdk-8-jdk libwxgtk3.0-gtk3-dev bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev git repo
+          sudo apt-get install openjdk-8-jdk libwxgtk3.0-gtk3-dev bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev git curl
+          
+          # Installing "repo" Tool
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
           
           # Authenticating "repo" with GitHub Account
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "banyaltanishq@gmail.com"
+          git config --global user.name "Tanishq-Banyal"
           
           # Enabling Caching (not sure)
           export USE_CCACHE=1
