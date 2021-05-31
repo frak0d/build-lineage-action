@@ -65,6 +65,7 @@ jobs:
           body: |
             This is an Automatic Release by GitHub Actions.
           files: |
-            $OUT/*
+            $OUT/recovery.img
+            $OUT/lineage-*-land.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
