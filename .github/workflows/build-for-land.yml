@@ -1,36 +1,42 @@
-# This is a basic workflow to help you get started with Actions
+name: build-for-land
 
-name: CI
+on: workflow_dispatch
 
-# Controls when the action will run. 
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build-for-land:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name:
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          # Setting up Build Directories
+          mkdir -p ~/android/lineage
+          cd ~/android/lineage
+          
+          # Installing Dependencies from Apt
+          sudo apt-get install openjdk-8-jdk libwxgtk3.0-dev bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev git repo
+          
+          # Authenticating "repo" with GitHub Account
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          
+          # Enabling Caching (not sure)
+          export USE_CCACHE=1
+          export CCACHE_EXEC=/usr/bin/ccache
+          ccache -M 25G
+          
+          # Setting Up Local Repo
+          repo init -u https://github.com/LineageOS/android.git -b lineage-15.1 && repo sync
+          
+          #Now ensure your Redmi 3S/3X is connected to your computer via the USB cable, with ADB and root enabled, and that you are in the ~/android/lineage/device/xiaomi/land folder.
+          #Then run the extract-files.sh script:
+          #./extract-files.sh
+          #The blobs should be pulled into the ~/android/lineage/vendor/xiaomi folder. If you see “command not found” errors, adb may need to be placed in ~/bin.
+          
+          # Setting Up Build Environment
+          source build/envsetup.sh && breakfast land
+          
+          # Starting Build Process
+          #croot && brunch land
+          
+          # Build Finished
+          #cd $OUT
